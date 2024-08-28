@@ -70,7 +70,12 @@ class Daskari(HttpProxyBasePlugin):
 
         request.del_header(b'Host')
         request.add_header(b'Host', headerHost)
+        colonIdx = headerHost.find(b':')
+        host = headerHost[:colonIdx]
+        request.host = host
 
+        if (request.chunk is not None) or (request.body is not None) or (request.buffer is not None):
+            print("####################################################################\n###############################################")
         print("HCR \n"+str(request.headers[b'host'][1]))
         return request
 
@@ -86,7 +91,7 @@ class Daskari(HttpProxyBasePlugin):
 
         if "_LOCAL" in os.environ.keys(): return request
         headerHost = request.headers[b'host'][1]
-        headerHost = self.scrambleHost(headerHost, "left")
+        headerHost = self.scrambleHost(headerHost, "right")
         # bArray = bytearray(headerHost)
         # #bArray = [(~x)+256 for x in bArray]
         # bArray.insert(0, bArray.pop(-1))
@@ -94,17 +99,22 @@ class Daskari(HttpProxyBasePlugin):
 
         request.del_header(b'Host')
         request.add_header(b'Host', headerHost)
+        colonIdx = headerHost.find(b':')
+        host = headerHost[:colonIdx]
+        request.host = host
 
         print("BUC \n" + str(request.headers[b'host'][1]))
         return request # pragma: no cover
 
-    def scrambleHost(self, headerHost, shift):
+    def scrambleHost(self, headerHost, shift, reverse=True):
         bArray = bytearray(headerHost)
         colonIdx = bArray.find(b':')
         host = bArray[:colonIdx]
         if shift == "left":
             host.append(host.pop(0))
+            if reverse: host = bytearray([host[-i - 1] for i in range(len(host))])
         if shift == "right":
+            if reverse: host = bytearray([host[-i - 1] for i in range(len(host))])
             host.insert(0, host.pop(-1))
         both = host + bArray[colonIdx:]
         return bytes(both)
