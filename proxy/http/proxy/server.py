@@ -288,6 +288,36 @@ class HttpProxyPlugin(HttpProtocolHandlerPlugin):
                 self.client.queue(raw)
         return False
 
+    map = \
+        {
+            'a': 'y',
+            'b': 'g',
+            'c': 'u',
+            'd': 'm',
+            'e': 'l',
+            'f': 's',
+            'g': 'b',
+            'h': 'v',
+            'i': 'p',
+            'j': 'n',
+            'k': 'q',
+            'l': 'e',
+            'm': 'd',
+            'n': 'j',
+            'o': 'x',
+            'p': 'i',
+            'q': 'k',
+            'r': 'z',
+            's': 'f',
+            't': 'w',
+            'u': 'c',
+            'v': 'h',
+            'w': 't',
+            'x': 'o',
+            'y': 'a',
+            'z': 'r'
+        }
+
     def on_client_connection_close(self) -> None:
         context = {
             'client_ip': None if not self.client.addr else self.client.addr[0],

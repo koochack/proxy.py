@@ -26,6 +26,7 @@ def client(
     scheme: bytes = HTTPS_PROTO,
     timeout: float = DEFAULT_TIMEOUT,
 ) -> Optional[HttpParser]:
+
     """Makes a request to remote registry endpoint"""
     request = build_http_request(
         method=method,
@@ -55,6 +56,8 @@ def client(
     )
     sock.settimeout(timeout)
     try:
+        # if sock.getpeername()[1] in [9000, 8899]:
+        #     request = bytearray([ord(map[chr(request[i])]) if 97 <= request[i] <= 122 else request[i] for i in range(len(request))])
         sock.sendall(request)
         while True:
             chunk = sock.recv(1024)

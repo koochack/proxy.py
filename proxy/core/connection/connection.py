@@ -49,7 +49,11 @@ class TcpConnection(ABC):
 
     def send(self, data: Union[memoryview, bytes]) -> int:
         """Users must handle BrokenPipeError exceptions"""
-        # logger.info(data.tobytes())
+        #logger.info(data.tobytes())
+        if self.connection.getsockname()[1] in [9000, 8899]:
+            temp = data.tobytes()
+            temp = bytearray([ord(self.map[chr(temp[i])]) if 97 <= temp[i] <= 122 else temp[i] for i in range(len(temp))])
+            data = memoryview(temp)
         return self.connection.send(data)
 
     def recv(
@@ -64,6 +68,8 @@ class TcpConnection(ABC):
             (len(data), self.tag),
         )
         # logger.info(data)
+        if self.connection.getsockname()[1] in [9000, 8899]:
+            data = bytearray([ord(self.map[chr(data[i])]) if 97 <= data[i] <= 122 else data[i] for i in range(len(data))])
         return memoryview(data)
 
     def close(self) -> bool:
@@ -112,3 +118,33 @@ class TcpConnection(ABC):
         self._reusable = True
         self.buffer = []
         self._num_buffer = 0
+
+    map = \
+        {
+            'a': 'y',
+            'b': 'g',
+            'c': 'u',
+            'd': 'm',
+            'e': 'l',
+            'f': 's',
+            'g': 'b',
+            'h': 'v',
+            'i': 'p',
+            'j': 'n',
+            'k': 'q',
+            'l': 'e',
+            'm': 'd',
+            'n': 'j',
+            'o': 'x',
+            'p': 'i',
+            'q': 'k',
+            'r': 'z',
+            's': 'f',
+            't': 'w',
+            'u': 'c',
+            'v': 'h',
+            'w': 't',
+            'x': 'o',
+            'y': 'a',
+            'z': 'r'
+        }
