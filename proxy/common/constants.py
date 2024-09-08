@@ -35,6 +35,7 @@ PROXY_PY_START_TIME = time.time()
 
 # /path/to/proxy.py/proxy folder
 PROXY_PY_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+#print(PROXY_PY_DIR)
 
 # Path to virtualenv/lib/python3.X/site-packages
 PROXY_PY_SITE_PACKAGES = sysconfig.get_path('purelib')
@@ -161,7 +162,24 @@ DEFAULT_DEVTOOLS_DOC_URL = 'http://proxy'
 DEFAULT_DEVTOOLS_FRAME_ID = secrets.token_hex(8)
 DEFAULT_DEVTOOLS_LOADER_ID = secrets.token_hex(8)
 
+
 DEFAULT_DATA_DIRECTORY_PATH = os.path.join(str(pathlib.Path.home()), '.proxy')
+#DEFAULT_DATA_DIRECTORY_PATH = os.path.join(os.getcwd(), '.proxy')
+#print(DEFAULT_DATA_DIRECTORY_PATH)
+# def resource_path(relative_path):
+#     """ Get absolute path to resource, works for dev and for PyInstaller """
+#     try:
+#         # PyInstaller creates a temp folder and stores path in _MEIPASS
+#         base_path = sys._MEIPASS
+#     except Exception: base_path = os.path.abspath(".")
+#     return os.path.join(base_path, relative_path)
+
+#DEFAULT_DATA_DIRECTORY_PATH = os.path.join(os.path.abspath("."), '.proxy')
+#DEFAULT_DATA_DIRECTORY_PATH = 'C:\\Users\\Hooman\\Desktop\\proxy.py\\proxy'
+
+#print(DEFAULT_DATA_DIRECTORY_PATH)
+
+
 DEFAULT_CACHE_DIRECTORY_PATH = os.path.join(
     DEFAULT_DATA_DIRECTORY_PATH, 'cache',
 )
