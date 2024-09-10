@@ -52,8 +52,10 @@ class TcpConnection(ABC):
         #logger.info(data.tobytes())
         # print('send. sock: ' + str(self.connection.getsockname()))
         # print('send. peer: ' + str(self.connection.getpeername()))
+        print("send as " + self.tag + ". sock: " + str(self.connection.getsockname()) + " peer: " + str(self.connection.getpeername()))
     #if self.connection.getpeername()[0] == '77.37.63.119':
-        if self.tag == 'client':
+        if (self.tag == 'server' and self.connection.getpeername() == ('77.37.63.119', '9000')) or \
+            (self.tag == 'client' and self.connection.getsockname() == ('77.37.63.119', '9000')):
             temp = data.tobytes()
             temp = bytearray([ord(self.map[chr(temp[i])]) if 97 <= temp[i] <= 122 else temp[i] for i in range(len(temp))])
             data = memoryview(temp)
@@ -71,11 +73,13 @@ class TcpConnection(ABC):
             (len(data), self.tag),
         )
         # logger.info(data)
+        print("recv as " + self.tag + ". sock: " + str(self.connection.getsockname()) + " peer: " + str(self.connection.getpeername()))
         # print('recv. sock: ' + str(self.connection.getsockname()))
         # print('recv. peer: ' + str(self.connection.getpeername()))
         # if self.connection.getpeername()[0] == '77.37.63.119':
-        if self.tag == 'server':
-            data = bytearray([ord(self.map[chr(data[i])]) if 97 <= data[i] <= 122 else data[i] for i in range(len(data))])
+        if (self.tag == 'server' and self.connection.getpeername() == ('77.37.63.119', '9000')) or\
+            (self.tag == 'client' and self.connection.getsockname() == ('77.37.63.119', '9000')):
+                data = bytearray([ord(self.map[chr(data[i])]) if 97 <= data[i] <= 122 else data[i] for i in range(len(data))])
         return memoryview(data)
 
     def close(self) -> bool:
