@@ -4,5 +4,5 @@
 #local
 import proxy
 if __name__ == '__main__':
-    with proxy.Proxy(['--plugins', 'proxy.plugin.ProxyPoolPlugin', '--proxy-pool', '77.37.63.119:9000', '--log-level', 'i', '--timeout', '200', '--local-executor', '0']) as p:
+    with proxy.Proxy(['--plugins', 'proxy.plugin.ProxyPoolPlugin', '--proxy-pool', '77.37.63.119:9000', '--log-level', 'c', '--timeout', '200', '--local-executor', '0']) as p:
         proxy.sleep_loop(p)
